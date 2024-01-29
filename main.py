@@ -36,10 +36,14 @@ class Application(tk.Frame):
         self.text_output.pack(pady=10)
 
         # ボタン
-        self.submit_button = tk.Button(self, text="送信", command=self.submit, state=tk.DISABLED)
-        self.submit_button.pack()
+        self.submit_button = tk.Button(
+            self, text="送信", command=self.submit, state=tk.DISABLED
+        )
+        self.submit_button.pack(pady=10)
 
         # Textの変更を監視
+        self.entry1.bind("<KeyRelease>", self.check_text_content)
+        self.entry2.bind("<KeyRelease>", self.check_text_content)
         self.text_output.bind("<KeyRelease>", self.check_text_content)
 
     def toggle_editability(self):
@@ -50,7 +54,11 @@ class Application(tk.Frame):
 
     def check_text_content(self, event):
         # Textの内容が空でない場合、ボタンを活性化
-        if self.text_output.get("1.0", tk.END).strip():
+        if (
+            self.text_output.get("1.0", tk.END).strip()
+            and self.entry1.get().strip()
+            and self.entry2.get().strip()
+        ):
             self.submit_button.config(state=tk.NORMAL)
         else:
             self.submit_button.config(state=tk.DISABLED)
@@ -59,7 +67,7 @@ class Application(tk.Frame):
         print("ボタンが押されました")
         id = str(self.entry1.get())
         token = str(self.entry2.get())
-        content = str(self.text_output.get("1.0", tk.END + '-1c'))
+        content = str(self.text_output.get("1.0", tk.END + "-1c"))
         print(id, token, content)
         NotionAPI(id, token, content)
         self.text_output.delete(1.0, tk.END)
