@@ -1,4 +1,5 @@
 import tkinter as tk
+from api import NotionAPI
 
 class Application(tk.Frame):
     def __init__(self, root=None):
@@ -41,7 +42,9 @@ class Application(tk.Frame):
         print('ボタンが押されました')
         id = self.entry1.get()
         token = self.entry2.get()
-        content = self.text_output.get("1.0", tk.END)
+        content = self.text_output.get("1.0", tk.END + '-1c')
+        NotionAPI(id, token, content)
+        self.text_output.delete(1.0, tk.END)
         print(id, token, content)
 
 if __name__ == '__main__':
