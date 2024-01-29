@@ -1,7 +1,8 @@
+import json
 import requests
 
 class NotionAPI:
-    def __init__(self, id=None, token=None, text_output=None) -> str:
+    def __init__(self, id=None, token=None, text_output=None) -> json:
         url = "https://api.notion.com/v1/pages"
         headers = {
         "Accept": "application/json",
