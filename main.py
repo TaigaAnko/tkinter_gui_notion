@@ -12,20 +12,20 @@ class Application(tk.Frame):
     def create_widgets(self):
         self.var_checkbox = tk.BooleanVar()
         checkbox = tk.Checkbutton(self, text="編集", variable=self.var_checkbox, command=self.toggle_editability)
-        checkbox.pack()
+        checkbox.pack(side=tk.LEFT)
 
         # テキストボックス1
         text_var1 = tk.StringVar()
         self.entry1 = tk.Entry(self, width=30, state=tk.DISABLED, textvariable=text_var1)
-        self.entry1.pack()
+        self.entry1.pack(pady=10)
 
         # テキストボックス2
         text_var2 = tk.StringVar()
         self.entry2 = tk.Entry(self, width=30, state=tk.DISABLED, textvariable=text_var2)
-        self.entry2.pack()
+        self.entry2.pack(pady=10)
 
         text_output = tk.Text(self, height=10, width=40)
-        text_output.pack()
+        text_output.pack(pady=10)
 
         button = tk.Button(self, text='実行',
                            command=self.submit)
