@@ -1,7 +1,7 @@
 import requests
 
 class NotionAPI:
-    def __init__(self, id=None, token=None, text_output=None) -> None:
+    def __init__(self, id=None, token=None, text_output=None) -> str:
         url = "https://api.notion.com/v1/pages"
         headers = {
         "Accept": "application/json",
@@ -21,4 +21,4 @@ class NotionAPI:
 
         result_dict = response.json()
         result = result_dict["object"]
-        print(result)
+        return result
