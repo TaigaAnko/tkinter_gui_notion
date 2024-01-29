@@ -36,8 +36,8 @@ class Application(tk.Frame):
         self.text_output.pack(pady=10)
 
         # ボタン
-        button = tk.Button(self, text="送信", command=self.submit)
-        button.pack()
+        self.submit_button = tk.Button(self, text="送信", command=self.submit, state=tk.DISABLED)
+        self.submit_button.pack()
 
         # Textの変更を監視
         self.text_output.bind("<KeyRelease>", self.check_text_content)
@@ -48,14 +48,21 @@ class Application(tk.Frame):
         self.entry1.config(state=state)
         self.entry2.config(state=state)
 
+    def check_text_content(self, event):
+        # Textの内容が空でない場合、ボタンを活性化
+        if self.text_output.get("1.0", tk.END).strip():
+            self.submit_button.config(state=tk.NORMAL)
+        else:
+            self.submit_button.config(state=tk.DISABLED)
+
     def submit(self):
         print("ボタンが押されました")
-        id = self.entry1.get()
-        token = self.entry2.get()
-        content = self.text_output.get("1.0", tk.END + "-1c")
+        id = str(self.entry1.get())
+        token = str(self.entry2.get())
+        content = str(self.text_output.get("1.0", tk.END + '-1c'))
+        print(id, token, content)
         NotionAPI(id, token, content)
         self.text_output.delete(1.0, tk.END)
-        print(id, token, content)
 
 
 if __name__ == "__main__":
