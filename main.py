@@ -16,16 +16,16 @@ class Application(tk.Frame):
 
         # テキストボックス1
         text_var1 = tk.StringVar()
-        self.entry1 = tk.Entry(self, width=30, state=tk.DISABLED, textvariable=text_var1)
+        self.entry1 = tk.Entry(self, width=40, state=tk.DISABLED, textvariable=text_var1)
         self.entry1.pack(pady=10)
 
         # テキストボックス2
         text_var2 = tk.StringVar()
-        self.entry2 = tk.Entry(self, width=30, state=tk.DISABLED, textvariable=text_var2)
+        self.entry2 = tk.Entry(self, width=40, state=tk.DISABLED, textvariable=text_var2)
         self.entry2.pack(pady=10)
 
-        text_output = tk.Text(self, height=10, width=40)
-        text_output.pack(pady=10)
+        self.text_output = tk.Text(self, height=10, width=40)
+        self.text_output.pack(pady=10)
 
         button = tk.Button(self, text='実行',
                            command=self.submit)
@@ -39,6 +39,10 @@ class Application(tk.Frame):
     
     def submit(self):
         print('ボタンが押されました')
+        id = self.entry1.get()
+        token = self.entry2.get()
+        content = self.text_output.get("1.0", tk.END)
+        print(id, token, content)
 
 if __name__ == '__main__':
     root = tk.Tk()
