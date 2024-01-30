@@ -1,63 +1,43 @@
 import tkinter as tk
 from api import NotionAPI
+from form import From  
 
 
 class Application(tk.Frame):
     def __init__(self, root=None):
-        super().__init__(root, width=380, height=280, borderwidth=1, relief="groove")
+        super().__init__(root, width=380, height=280, borderwidth=1, relief="flat")
         self.root = root
         self.pack()
         self.pack_propagate(0)
         self.create_widgets()
 
     def create_widgets(self):
-        self.var_checkbox = tk.BooleanVar()
-        checkbox = tk.Checkbutton(
-            self, text="編集", variable=self.var_checkbox, command=self.toggle_editability
-        )
-        checkbox.pack(side=tk.LEFT)
-
-        # テキストボックス1
-        text_var1 = tk.StringVar()
-        self.entry1 = tk.Entry(
-            self, width=40, state=tk.DISABLED, textvariable=text_var1
-        )
-        self.entry1.pack(pady=10)
-
-        # テキストボックス2
-        text_var2 = tk.StringVar()
-        self.entry2 = tk.Entry(
-            self, width=40, state=tk.DISABLED, textvariable=text_var2
-        )
-        self.entry2.pack(pady=10)
+        self.id_form = From(root=self, label_text='ID')
+        self.id_form.grid(row=0, column=0, padx=10, pady=10)
+        self.token_form = From(root=self, label_text="Token")
+        self.token_form.grid(row=1, column=0, padx=10, pady=10)
 
         # 大きいテキストボックス
         self.text_output = tk.Text(self, height=10, width=40)
-        self.text_output.pack(pady=10)
+        self.text_output.grid(row=2, column=0, padx=10, pady=10)
 
         # ボタン
         self.submit_button = tk.Button(
             self, text="送信", command=self.submit, state=tk.DISABLED
         )
-        self.submit_button.pack(pady=10)
+        self.submit_button.grid(row=3, column=0, padx=10, pady=10)
 
         # Textの変更を監視
-        self.entry1.bind("<KeyRelease>", self.check_text_content)
-        self.entry2.bind("<KeyRelease>", self.check_text_content)
+        self.id_form.bind("<KeyRelease>", self.check_text_content)
+        self.token_form.bind("<KeyRelease>", self.check_text_content)
         self.text_output.bind("<KeyRelease>", self.check_text_content)
-
-    def toggle_editability(self):
-        # チェックボックスの状態に応じてテキストボックスの編集を有効または無効にする
-        state = tk.NORMAL if self.var_checkbox.get() else tk.DISABLED
-        self.entry1.config(state=state)
-        self.entry2.config(state=state)
 
     def check_text_content(self, event):
         # Textの内容が空でない場合、ボタンを活性化
         if (
             self.text_output.get("1.0", tk.END).strip()
-            and self.entry1.get().strip()
-            and self.entry2.get().strip()
+            and self.id_form.get_entry_value().strip()
+            and self.token_form.get_entry_value().strip()
         ):
             self.submit_button.config(state=tk.NORMAL)
         else:
@@ -65,8 +45,8 @@ class Application(tk.Frame):
 
     def submit(self):
         print("ボタンが押されました")
-        id = str(self.entry1.get())
-        token = str(self.entry2.get())
+        id = str(self.id_form.get_entry_value())
+        token = str(self.token_form.get_entry_value())
         content = str(self.text_output.get("1.0", tk.END + "-1c"))
         print(id, token, content)
         NotionAPI(id, token, content)
@@ -76,6 +56,6 @@ class Application(tk.Frame):
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Fast Notion")
-    root.geometry("400x300")
+    root.geometry("400x400")
     app = Application(root=root)
     app.mainloop()
