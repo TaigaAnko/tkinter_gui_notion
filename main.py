@@ -48,7 +48,7 @@ class Application(tk.Frame):
         id = str(self.id_form.get_entry_value())
         token = str(self.token_form.get_entry_value())
         content = str(self.text_output.get("1.0", tk.END + "-1c"))
-        print(id, token, content)
+        # print(id, token, content)
         NotionAPI(id, token, content)
         self.text_output.delete(1.0, tk.END)
 

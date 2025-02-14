@@ -1,1 +1,4 @@
-/config.config/
+config/config.ini
+notion_app_venv/
+.pytest_cache/
+__pycache__/
