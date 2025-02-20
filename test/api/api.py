@@ -1,6 +1,9 @@
 import configparser
 import requests
 
+from api import NotionAPI
+from error import UnauthorizedError
+
 VALIDSETTINGS = "VALIDSETTINGS"
 INVALIDSETTINGS = "INVALIDSETTINGS"
 OLDVALIDSETTINGS = "OLDVALIDSETTINGS"
@@ -36,7 +39,7 @@ def test_token_invaild():
 
     response = requests.get(url, headers=headers)
 
-    assert response.status_code == 400 or 401 or 404
+    assert response.status_code == 401
     assert response.json()["object"] == "error"
 
 
@@ -80,3 +83,19 @@ def test_not_exist_invaild_url():
     response = requests.post(url, headers=headers)
     assert response.status_code == 400 or 401 or 404
     assert response.json()["object"] == "error"
+
+
+def test_check_token_vaild():
+    config = configparser.ConfigParser()
+    config.read("config/config.ini")
+    api = NotionAPI()
+    res = api.test_check_token(config[VALIDSETTINGS][TOKEN])
+    assert res == True
+
+
+def test_check_token_invaild():
+    config = configparser.ConfigParser()
+    config.read("config/config.ini")
+    api = NotionAPI()
+    res = api.test_check_token(config[INVALIDSETTINGS][TOKEN])
+    assert isinstance(res, UnauthorizedError)
